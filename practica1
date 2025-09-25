@@ -6,7 +6,12 @@ Este módulo implementa un modelo de vehículos utilizando Programación Orienta
 Incluye una clase base 'Vehiculo' y clases derivadas como 'Coche', 'Moto' y 'Camion',
 demostrando conceptos como herencia, encapsulamiento y polimorfismo.
 
-Autor: [Tu Nombre]
+Autor: Equipo 7 
+Alonso Jaen Elisa Damari 
+Ceron Dauzon Jorge Uriel 
+Nevraumont Ceballos Sara Crystel 
+Trujillo Frenco Karla Yorleni 
+Zamora Toral Fernanda
 Fecha: 2025-09-25
 """
 
