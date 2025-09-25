@@ -1,0 +1,260 @@
+"""
+Módulo: vehiculos.py
+
+Descripción:
+Este módulo implementa un modelo de vehículos utilizando Programación Orientada a Objetos (POO) en Python.
+Incluye una clase base 'Vehiculo' y clases derivadas como 'Coche', 'Moto' y 'Camion',
+demostrando conceptos como herencia, encapsulamiento y polimorfismo.
+
+Autor: [Tu Nombre]
+Fecha: 2025-09-25
+"""
+
+# --- Clase Base ---
+
+class Vehiculo:
+    """
+    Clase base para modelar cualquier tipo de vehículo.
+
+    Atributos privados:
+        __marca (str): Marca del vehículo.
+        __velocidad (int): Velocidad actual del vehículo en km/h.
+
+    Métodos:
+        acelerar(incremento): Aumenta la velocidad del vehículo.
+        frenar(decremento): Reduce la velocidad del vehículo, sin bajar de 0.
+        mostrar_datos(): Muestra la marca y velocidad actual (Método base).
+        consumo_combustible(): Calcula el consumo de combustible (Método base).
+    """
+    def __init__(self, marca: str):
+        """
+        Constructor de la clase Vehiculo.
+
+        Args:
+            marca (str): La marca del vehículo.
+        """
+        # Atributos privados (encapsulamiento)
+        self.__marca = marca
+        self.__velocidad = 0
+
+    # --- Getters y Setters (Opcional, para acceso controlado) ---
+    def get_marca(self) -> str:
+        """Retorna la marca del vehículo."""
+        return self.__marca
+
+    def get_velocidad(self) -> int:
+        """Retorna la velocidad actual del vehículo."""
+        return self.__velocidad
+
+    # --- Métodos de comportamiento ---
+
+    def acelerar(self, incremento: int):
+        """
+        Aumenta la velocidad actual del vehículo.
+
+        Args:
+            incremento (int): Cantidad en km/h a aumentar la velocidad.
+        """
+        self.__velocidad += incremento
+        print(f"El {self.__class__.__name__} {self.__marca} acelera a {self.__velocidad} km/h.")
+
+    def frenar(self, decremento: int):
+        """
+        Reduce la velocidad actual del vehículo. La velocidad nunca será menor que 0.
+
+        Args:
+            decremento (int): Cantidad en km/h a reducir la velocidad.
+        """
+        self.__velocidad -= decremento
+        if self.__velocidad < 0:
+            self.__velocidad = 0
+        print(f"El {self.__class__.__name__} {self.__marca} frena. Velocidad actual: {self.__velocidad} km/h.")
+
+    def mostrar_datos(self):
+        """
+        Muestra la información básica del vehículo: marca y velocidad.
+        Este método será sobrescrito en las subclases (Polimorfismo).
+        """
+        print("--- Datos del Vehículo Base ---")
+        print(f"Marca: {self.__marca} | Velocidad: {self.__velocidad} km/h")
+
+    def consumo_combustible(self) -> float:
+        """
+        Calcula un consumo de combustible base.
+        Este método será sobrescrito en las subclases (Polimorfismo).
+        Retorna el consumo base (5.0 L/100km)
+        """
+        return 5.0
+
+
+# --- Subclase Coche ---
+
+class Coche(Vehiculo):
+    """
+    Modela un coche, heredando de Vehiculo.
+
+    Atributo adicional:
+        __num_puertas (int): Número de puertas del coche.
+    """
+    LIMITE_VELOCIDAD = 120 # Límite específico para Coche
+
+    def __init__(self, marca: str, num_puertas: int):
+        """
+        Constructor de la clase Coche.
+
+        Args:
+            marca (str): La marca del coche.
+            num_puertas (int): El número de puertas del coche.
+        """
+        super().__init__(marca) # Llama al constructor de la clase base
+        self.__num_puertas = num_puertas
+
+    def acelerar(self, incremento: int):
+        """
+        Sobrescribe el método acelerar de Vehiculo, aplicando un límite de velocidad.
+        """
+        super().acelerar(incremento) # Usa el método de la clase padre
+        if self.get_velocidad() > self.LIMITE_VELOCIDAD:
+            print(f"¡Advertencia! Se ha superado el límite de velocidad del coche ({self.LIMITE_VELOCIDAD} km/h).")
+
+    def mostrar_datos(self):
+        """
+        Sobrescribe (Polimorfismo) el método mostrar_datos() para incluir el número de puertas.
+        """
+        print("\n--- Datos del Coche ---")
+        print(f"Marca: {self.get_marca()} | Velocidad: {self.get_velocidad()} km/h | Puertas: {self.__num_puertas}")
+
+    def consumo_combustible(self) -> float:
+        """
+        Sobrescribe (Polimorfismo) el cálculo del consumo.
+        Retorna: Consumo típico de un coche (ej. 7.5 L/100km).
+        """
+        return 7.5
+
+
+# --- Subclase Moto ---
+
+class Moto(Vehiculo):
+    """
+    Modela una moto, heredando de Vehiculo.
+
+    Atributo adicional:
+        __casco_recomendado (str): Tipo de casco de seguridad recomendado.
+    """
+    LIMITE_VELOCIDAD = 150 # Límite específico para Moto
+
+    def __init__(self, marca: str, casco_recomendado: str):
+        """
+        Constructor de la clase Moto.
+
+        Args:
+            marca (str): La marca de la moto.
+            casco_recomendado (str): El tipo de casco.
+        """
+        super().__init__(marca)
+        self.__casco_recomendado = casco_recomendado
+
+    def acelerar(self, incremento: int):
+        """
+        Sobrescribe el método acelerar de Vehiculo, aplicando un límite de velocidad.
+        """
+        super().acelerar(incremento)
+        if self.get_velocidad() > self.LIMITE_VELOCIDAD:
+            print(f"¡Advertencia! Se ha superado el límite de velocidad de la moto ({self.LIMITE_VELOCIDAD} km/h).")
+
+    def caballito(self):
+        """Comportamiento específico de la Moto."""
+        print(f"La {self.get_marca()} hace un caballito. ¡Qué pasada!")
+
+    def mostrar_datos(self):
+        """
+        Sobrescribe (Polimorfismo) el método mostrar_datos() para incluir el casco recomendado.
+        """
+        print("\n--- Datos de la Moto ---")
+        print(f"Marca: {self.get_marca()} | Velocidad: {self.get_velocidad()} km/h | Casco Recomendado: {self.__casco_recomendado}")
+
+    def consumo_combustible(self) -> float:
+        """
+        Sobrescribe (Polimorfismo) el cálculo del consumo.
+        Retorna: Consumo típico de una moto (ej. 4.0 L/100km).
+        """
+        return 4.0
+
+# --- Subclase Camion ---
+
+class Camion(Vehiculo):
+    """
+    Modela un camión, heredando de Vehiculo.
+
+    Atributo adicional:
+        __capacidad_carga (int): Capacidad máxima de carga en toneladas.
+    """
+    LIMITE_VELOCIDAD = 90 # Límite específico para Camión
+
+    def __init__(self, marca: str, capacidad_carga: int):
+        """
+        Constructor de la clase Camion.
+
+        Args:
+            marca (str): La marca del camión.
+            capacidad_carga (int): La capacidad de carga en toneladas.
+        """
+        super().__init__(marca)
+        self.__capacidad_carga = capacidad_carga
+
+    def acelerar(self, incremento: int):
+        """
+        Sobrescribe el método acelerar de Vehiculo, aplicando un límite de velocidad.
+        """
+        super().acelerar(incremento)
+        if self.get_velocidad() > self.LIMITE_VELOCIDAD:
+            print(f"¡Advertencia! Se ha superado el límite de velocidad del camión ({self.LIMITE_VELOCIDAD} km/h).")
+
+    def mostrar_datos(self):
+        """
+        Sobrescribe (Polimorfismo) el método mostrar_datos() para incluir la capacidad de carga.
+        """
+        print("\n--- Datos del Camión ---")
+        print(f"Marca: {self.get_marca()} | Velocidad: {self.get_velocidad()} km/h | Capacidad de Carga: {self.__capacidad_carga} T")
+
+    def consumo_combustible(self) -> float:
+        """
+        Sobrescribe (Polimorfismo) el cálculo del consumo.
+        Retorna: Consumo típico de un camión (ej. 25.0 L/100km).
+        """
+        return 25.0
+
+# --- Bloque de Ejecución de Prueba ---
+
+if __name__ == "__main__":
+    print("====================================")
+    print("  Demostración de Vehículos (POO) ")
+    print("====================================")
+
+    # 1. Objeto Coche
+    mi_coche = Coche("Toyota", 5)
+    mi_coche.mostrar_datos()
+    mi_coche.acelerar(60)
+    mi_coche.frenar(10)
+    mi_coche.acelerar(70) # Advertencia de límite
+    mi_coche.mostrar_datos()
+    print(f"Consumo estimado del coche: {mi_coche.consumo_combustible()} L/100km")
+
+    # 2. Objeto Moto
+    mi_moto = Moto("Kawasaki", "Integral")
+    mi_moto.mostrar_datos()
+    mi_moto.acelerar(100)
+    mi_moto.frenar(50)
+    mi_moto.caballito() # Método específico
+    mi_moto.acelerar(150) # Advertencia de límite
+    mi_moto.mostrar_datos()
+    print(f"Consumo estimado de la moto: {mi_moto.consumo_combustible()} L/100km")
+
+    # 3. Objeto Camion
+    mi_camion = Camion("Volvo", 40)
+    mi_camion.mostrar_datos()
+    mi_camion.acelerar(50)
+    mi_camion.acelerar(50) # Advertencia de límite
+    mi_camion.frenar(100) # Demostración de que la velocidad no baja de 0
+    mi_camion.mostrar_datos()
+    print(f"Consumo estimado del camión: {mi_camion.consumo_combustible()} L/100km")
